@@ -873,6 +873,14 @@ const server = Bun.serve({
     if (url.pathname === "/healthz") {
       return new Response("ok", { status: 200, headers: { "content-type": "text/plain; charset=utf-8" } });
     }
+    // Log de acesso, como um servidor de verdade: IP, método, caminho e
+    // user-agent de cada requisição. O IP vem do X-Forwarded-For que o
+    // Railway repassa (primeiro da lista); sem ele, usa o IP direto da
+    // conexão. Nunca registra corpo, senha ou token.
+    const fwd = req.headers.get("x-forwarded-for");
+    const ip = fwd ? fwd.split(",")[0].trim() : (server.requestIP(req)?.address ?? "?");
+    const ua = req.headers.get("user-agent") ?? "-";
+    console.log(`[vetor:req] ${new Date().toISOString()} ${ip} ${req.method} ${url.pathname}${url.search} "${ua}"`);
     if (url.pathname === "/actions") {
       if (req.method !== "POST") {
         return jsonResponse(405, { error: { message: "Método não permitido." } });
