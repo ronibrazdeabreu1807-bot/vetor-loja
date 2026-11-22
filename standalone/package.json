@@ -1,0 +1,1 @@
+{"description":"Loja Vetor fora do Muse: servidor Bun autossuficiente (bun:sqlite + node:crypto, sem dependências de npm).","name":"vetor-loja-standalone","private":true,"scripts":{"start":"bun run server.ts"},"type":"module","version":"1.0.0"}
