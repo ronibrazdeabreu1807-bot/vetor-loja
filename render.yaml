@@ -1,0 +1,14 @@
+# Blueprint do Render — Loja Vetor (standalone, plano grátis)
+# Uso: no painel do Render, New → Blueprint → conectar o repositório que
+# contém este arquivo na raiz. O serviço é criado já configurado.
+services:
+  - type: web
+    name: vetor-loja
+    runtime: docker
+    plan: free
+    dockerfilePath: ./standalone/Dockerfile
+    dockerContext: ./standalone
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
