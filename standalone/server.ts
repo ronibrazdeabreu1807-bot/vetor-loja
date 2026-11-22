@@ -370,6 +370,11 @@ function audit(userId: number | null, email: string, event: string, detail = "")
     detail,
     Date.now(),
   );
+  // Registro também no stdout: o Railway guarda o log do container, então
+  // o histórico de auditoria pode ser conferido depois mesmo que o banco
+  // (SQLite local, apagado a cada restart no plano grátis) seja recriado.
+  // Nunca registra senhas, tokens ou dados de sessão — só evento e e-mail.
+  console.log(`[vetor:audit] ${new Date().toISOString()} ${event} ${email}${detail ? ` — ${detail}` : ""}`);
 }
 
 function requireUser(token: string): UserRow {
